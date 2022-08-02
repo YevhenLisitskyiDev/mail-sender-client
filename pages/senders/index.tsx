@@ -3,14 +3,14 @@ import { Stack, Divider, Box, Grid, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import {
   DataGrid,
-  DataGridProProps,
+  DataGridProps,
   GridRowsProp,
   GridColDef,
 } from "@mui/x-data-grid";
 import React from "react";
 import { FC } from "react";
 
-const ZenDataGrid = styled(DataGrid)<DataGridProProps>(({ theme }) => ({
+const ZenDataGrid = styled(DataGrid)<DataGridProps>(({ theme }) => ({
   "&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, &.MuiDataGrid-root .MuiDataGrid-cell:focus":
     {
       outline: "none",
