@@ -11,6 +11,15 @@ export const theme = createTheme({
       main: "#ECB365",
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
   components: {
     // Use `MuiDataGrid` on DataGrid, DataGridPro and DataGridPremium
     MuiDataGrid: {
