@@ -9,6 +9,9 @@ import {
 } from "@mui/x-data-grid";
 import React from "react";
 import { FC } from "react";
+import ListContainer from "../../components/ListContainer";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const ZenDataGrid = styled(DataGrid)<DataGridProps>(({ theme }) => ({
   "&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, &.MuiDataGrid-root .MuiDataGrid-cell:focus":
@@ -19,62 +22,59 @@ const ZenDataGrid = styled(DataGrid)<DataGridProps>(({ theme }) => ({
 
 const senders: GridRowsProp = [
   { id: 1, name: "for myself", email: "@", isActive: true },
-  { id: 2, name: "for my family", email: "@",  isActive: true },
-  { id: 3, name: "for my friends", email: "@",  isActive: true },
-  { id: 4, name: "for my colleagues", email: "@",  isActive: true},
-  { id: 5, name: "for my boss", email: "@",  isActive: true },
+  { id: 2, name: "for my family", email: "@", isActive: true },
+  { id: 3, name: "for my friends", email: "@", isActive: false },
+  { id: 4, name: "for my colleagues", email: "@", isActive: true },
+  { id: 5, name: "for my boss", email: "@", isActive: true },
 ];
 
 const columns: GridColDef[] = [
+  { field: "name", headerName: "Senderr Name", width: 200 },
+  { field: "email", headerName: "Senderr Email", width: 400 },
   {
     field: "isActive",
-    headerName: "isActive",
-    renderCell: (params) => (
-      <Button
-        variant="contained"
-        size="small"
-        style={{ marginLeft: 16 }}
-        tabIndex={params.hasFocus ? 0 : -1}>
-        delete
-      </Button>
-    ),
-  },
-  { field: "name", headerName: "Column 1", width: 200 },
-  { field: "email", headerName: "Column 2", width: 200 },
-  {
-    field: "id",
     headerName: "",
-    renderCell: (params) => (
-      <Button
-        variant="contained"
-        size="small"
-        style={{ marginLeft: 16 }}
-        tabIndex={params.hasFocus ? 0 : -1}>
-        delete
-      </Button>
-    ),
+    renderCell: (params) =>
+      params.row.isActive ? (
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          tabIndex={params.hasFocus ? 0 : -1}>
+          Stop senderr
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          size="small"
+          tabIndex={params.hasFocus ? 0 : -1}>
+          Start sender
+        </Button>
+      ),
+    width: 200,
   },
 ];
 
 const Senders: FC = () => {
   const [selectedSender, setSelectedSender] = React.useState<any>(null);
   return (
-    <Grid container spacing={2} sx={{ height: "100%" }}>
-      <Grid item xs={8}>
-        <ZenDataGrid
-          autoHeight
-          rows={senders}
-          columns={columns}
-          onSelectionModelChange={(newSelection: any) => {
-            setSelectedSender(newSelection[0]);
-          }}
-          pagination
-          pageSize={10}
-          disableMultipleSelection
-        />
-      </Grid>
-      <Grid item xs={4}>
-        Choose an element to see its details
+    <Grid container spacing={2} sx={{ height: "calc(100vh - 50px)" }}>
+      <ListContainer>
+        <Box height={"100%"}>
+          <ZenDataGrid
+            rows={senders}
+            columns={columns}
+            onSelectionModelChange={(newSelection: any) => {
+              setSelectedSender(newSelection[0]);
+            }}
+            pagination
+            pageSize={10}
+            disableMultipleSelection={true}
+          />
+        </Box>
+      </ListContainer>
+      <Grid item xs={3}>
+        {selectedSender}
       </Grid>
     </Grid>
   );
