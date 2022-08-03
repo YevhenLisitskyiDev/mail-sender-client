@@ -1,75 +1,54 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { FC, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import moment, { Moment } from "moment";
 import DateItemsRenderer from "./DateItemsRenderer";
+import { mockSchedules } from "../../utils/mock";
+import { Schedule } from "../../utils/types/schedules";
+import CalendarHeader from "./CalenderHeader";
+import CalendarColumnTitles from "./CaendarColumnTitles";
+import { getDatesFromSchedules } from "./helpers";
 
-const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+export interface CalendarComponentBasicProps {
+  currentDate: Date | moment.Moment;
+  setCurrentDate: Dispatch<SetStateAction<Date | moment.Moment>>;
+}
 
 const Calendar: FC = () => {
-  const [selectedDate, setSelectedDate] = useState<Moment | Date>(new Date());
-  const NEXT_MONTH = moment(selectedDate).add(1, "month");
-  const PREV_MONTH = moment(selectedDate).subtract(1, "month");
+  const [currentDate, setCurrentDate] = useState<Moment | Date>(new Date());
+  const [schedules, setSchedules] = useState<Schedule[]>(mockSchedules);
+  const [selectedSchedule, setSelectedSchedule] =
+    useState<Schedule[]>(mockSchedules);
+  const activeDates = getDatesFromSchedules(selectedSchedule);
+
+  const [editMode, setEditMode] = useState(false);
+
+  const handleDateClick = (date: Moment | Date) => {
+    setCurrentDate(date);
+  };
 
   return (
     <>
-      <Grid container spacing={0.5}>
-        <Grid item xs={2} sx={{ textAlign: "center" }}></Grid>
-        <Grid
-          item
-          xs={1}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setSelectedDate(PREV_MONTH);
-            }}>
-            Prev month
-          </Button>
-        </Grid>
-        <Grid item xs={6} sx={{ textAlign: "center" }}>
-          <Typography variant="h1">
-            {moment(selectedDate).format("MMMM YYYY")}
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          xs={1}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setSelectedDate(NEXT_MONTH);
-            }}>
-            Next month
-          </Button>
-        </Grid>
-        <Grid item xs={2}></Grid>
-      </Grid>
-
-      <Grid container spacing={0.5}>
-        {DAYS.map((day, index) => (
-          <Grid item xs key={index} sx={{ textAlign: "center" }}>
-            {day}
-          </Grid>
-        ))}
-      </Grid>
-
+      <CalendarHeader
+        currentDate={currentDate}
+        setCurrentDate={setCurrentDate}
+      />
+      <CalendarColumnTitles />
       <DateItemsRenderer
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-        dateItem={(date: Moment, isActive: boolean) => (
+        currentDate={currentDate}
+        setCurrentDate={setCurrentDate}
+        activeDates={activeDates}
+        dateItem={(
+          date: Moment,
+          isCurrentMonth: boolean,
+          isSelected: boolean,
+          isActive: boolean
+        ) => (
           <Button
-            variant={isActive ? "contained" : "outlined"}
-            color="primary"
-            onClick={() => setSelectedDate(date)}>
+            variant={
+              isSelected ? "contained" : isCurrentMonth ? "outlined" : "text"
+            }
+            color={isSelected || isActive ? "primary" : "secondary"}
+            onClick={() => handleDateClick(date)}>
             {date?.format("D")}
           </Button>
         )}

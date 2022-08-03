@@ -1,20 +1,24 @@
 import { Button, Grid } from "@mui/material";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { Dispatch, FC, SetStateAction } from "react";
+import { CalendarComponentBasicProps } from ".";
+import { Schedule } from "../../utils/types/schedules";
 
-interface DateItemsRendererProps {
-  selectedDate: Date | moment.Moment;
-  setSelectedDate: Dispatch<SetStateAction<Date | moment.Moment>>;
+interface DateItemsRendererProps extends CalendarComponentBasicProps {
+  activeDates?: Date[] | moment.Moment[];
+  schedules?: Schedule[];
   dateItem: any;
 }
 
 const DateItemsRenderer: FC<DateItemsRendererProps> = ({
-  selectedDate,
-  setSelectedDate,
+  currentDate,
+  setCurrentDate,
+  activeDates = [],
+  schedules = [],
   dateItem,
 }) => {
-  const CURRENT_MONTH = moment(selectedDate).format("M");
-  const FIRST_DAY_OF_FIRST_WEEK = moment(selectedDate)
+  const CURRENT_MONTH = moment(currentDate).format("M");
+  const FIRST_DAY_OF_FIRST_WEEK = moment(currentDate)
     .startOf("month")
     .weekday(1);
 
@@ -30,7 +34,19 @@ const DateItemsRenderer: FC<DateItemsRendererProps> = ({
               const date = moment(FIRST_DAY_OF_FIRST_WEEK)
                 .add(i, "weeks")
                 .add(j, "days");
-              const isActive = CURRENT_MONTH === date.format("M");
+
+              const isActive = activeDates.some((activeDate) => {
+                return moment(activeDate).isSame(date, "day");
+              });
+
+              const isCurrentMonth = CURRENT_MONTH === date.format("M");
+
+              const isSameDay =
+                date.format("D") === moment(currentDate).format("D");
+              const isSameMonth =
+                date.format("M") === moment(currentDate).format("M");
+              const isSelected = isSameDay && isSameMonth;
+
               return (
                 <Grid
                   mt={1}
@@ -38,7 +54,7 @@ const DateItemsRenderer: FC<DateItemsRendererProps> = ({
                   item
                   xs
                   sx={{ display: "flex", justifyContent: "center" }}>
-                  {dateItem(date, isActive)}
+                  {dateItem(date, isCurrentMonth, isSelected, isActive)}
                 </Grid>
               );
             })}
