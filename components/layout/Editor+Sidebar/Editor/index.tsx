@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { height } from "@mui/system";
 import { FC } from "react";
 
-const ListContainer: FC<{ children: JSX.Element | JSX.Element[] }> = ({
+const Editor: FC<{ children: JSX.Element | JSX.Element[] }> = ({
   children,
 }) => {
   return (
@@ -11,4 +11,4 @@ const ListContainer: FC<{ children: JSX.Element | JSX.Element[] }> = ({
     </Grid>
   );
 };
-export default ListContainer;
+export default Editor;

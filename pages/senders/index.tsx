@@ -9,9 +9,11 @@ import {
 } from "@mui/x-data-grid";
 import React from "react";
 import { FC } from "react";
-import ListContainer from "../../components/ListContainer";
+import Editor from "../../components/layout/Editor+Sidebar/Editor";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Sidebar from "../../components/layout/Editor+Sidebar/Sidebar";
+import EditorAndSidebar from "../../components/layout/Editor+Sidebar";
 
 const ZenDataGrid = styled(DataGrid)<DataGridProps>(({ theme }) => ({
   "&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, &.MuiDataGrid-root .MuiDataGrid-cell:focus":
@@ -58,8 +60,8 @@ const columns: GridColDef[] = [
 const Senders: FC = () => {
   const [selectedSender, setSelectedSender] = React.useState<any>(null);
   return (
-    <Grid container spacing={2} sx={{ height: "calc(100vh - 50px)" }}>
-      <ListContainer>
+    <EditorAndSidebar
+      editorContent={() => (
         <Box height={"100%"}>
           <ZenDataGrid
             rows={senders}
@@ -72,11 +74,9 @@ const Senders: FC = () => {
             disableMultipleSelection={true}
           />
         </Box>
-      </ListContainer>
-      <Grid item xs={3}>
-        {selectedSender}
-      </Grid>
-    </Grid>
+      )}
+      sidebarContent={() => <>{selectedSender}</>}
+    />
   );
 };
 
