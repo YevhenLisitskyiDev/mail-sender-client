@@ -7,10 +7,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Link from "next/link";
+import { Divider, Stack } from "@mui/material";
 
 const Header: FC = () => {
   return (
-    <AppBar position="fixed" component="nav">
+    <AppBar position="fixed" color="secondary" component="nav">
       <Toolbar>
         <Typography
           variant="h6"
@@ -21,28 +22,30 @@ const Header: FC = () => {
           </Link>
         </Typography>
 
-        <Box sx={{ display: { xs: "none", sm: "block" } }}>
+        <Stack direction="row" spacing={2}>
           <Link href={"/senders"}>
             <a>
-              <Button color="inherit">Senders</Button>
+              <Button color="primary">Senders</Button>
             </a>
           </Link>
           <Link href={"/schedule"}>
             <a>
-              <Button color="inherit">Schedule</Button>
+              <Button color="primary">Schedule</Button>
             </a>
           </Link>
           <Link href={"/templates"}>
             <a>
-              <Button color="inherit">Templates</Button>
+              <Button color="primary">Templates</Button>
             </a>
           </Link>
           <Link href={"/"}>
             <a>
-              <Button color="inherit">Logout</Button>
+              <Button variant="outlined" color="primary">
+                Logout
+              </Button>
             </a>
           </Link>
-        </Box>
+        </Stack>
       </Toolbar>
     </AppBar>
   );
