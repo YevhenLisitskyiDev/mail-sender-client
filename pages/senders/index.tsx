@@ -61,7 +61,7 @@ const Senders: FC = () => {
   const [selectedSender, setSelectedSender] = React.useState<any>(null);
   return (
     <EditorAndSidebar
-      editorContent={() => (
+      editorContent={
         <Box height={"100%"}>
           <ZenDataGrid
             rows={senders}
@@ -74,8 +74,8 @@ const Senders: FC = () => {
             disableMultipleSelection={true}
           />
         </Box>
-      )}
-      sidebarContent={() => <>{selectedSender}</>}
+      }
+      sidebarContent={selectedSender}
     />
   );
 };
