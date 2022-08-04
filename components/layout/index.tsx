@@ -28,7 +28,7 @@ const Header: FC = () => {
               <Button color="primary">Senders</Button>
             </a>
           </Link>
-          <Link href={"/schedule"}>
+          <Link href={"/schedules"}>
             <a>
               <Button color="primary">Schedule</Button>
             </a>
