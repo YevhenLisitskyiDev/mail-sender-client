@@ -40,5 +40,12 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: "rgba(255, 255, 255, 0.5)",
+        },
+      },
+    },
   },
 });
