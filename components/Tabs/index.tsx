@@ -1,6 +1,6 @@
 // Tabs react component that takes an array of {tabName, tabContent} and renders them as MaterialUI tabs
 import { FC, useState } from "react";
-import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, Tab, Tabs as MUITabs, Typography } from "@mui/material";
 
 function a11yProps(index: number) {
   return {
@@ -9,7 +9,7 @@ function a11yProps(index: number) {
   };
 }
 
-const MUITabs: FC<{
+const Tabs: FC<{
   tabsData: {
     tabName: string;
     tabContent: JSX.Element;
@@ -31,7 +31,7 @@ const MUITabs: FC<{
 
   return (
     <Box sx={{ height: "calc(100% - 50px)", color: "#fff" }}>
-      <Tabs
+      <MUITabs
         value={value}
         onChange={handleChange}
         variant="fullWidth"
@@ -46,7 +46,7 @@ const MUITabs: FC<{
             {...a11yProps(index)}
           />
         ))}
-      </Tabs>
+      </MUITabs>
       {tabsContent.map((tabContent, index) => (
         <div
           key={index}
@@ -61,4 +61,4 @@ const MUITabs: FC<{
     </Box>
   );
 };
-export default MUITabs;
+export default Tabs;

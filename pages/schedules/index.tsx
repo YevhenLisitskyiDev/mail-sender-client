@@ -77,7 +77,7 @@ const Schedule: FC = () => {
   return (
     <EditorAndSidebar
       editorContent={editorContent}
-      sidebarContent={<MUITabs tabsData={sidebarTabsData} />}
+      sidebarContent={<Tabs tabsData={sidebarTabsData} />}
     />
   );
 };
