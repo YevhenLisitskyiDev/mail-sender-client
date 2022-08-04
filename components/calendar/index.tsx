@@ -13,12 +13,20 @@ export interface CalendarComponentBasicProps {
   setCurrentDate: Dispatch<SetStateAction<Date | moment.Moment>>;
 }
 
-const Calendar: FC = () => {
-  const [currentDate, setCurrentDate] = useState<Moment | Date>(new Date());
-  const [schedules, setSchedules] = useState<Schedule[]>(mockSchedules);
-  const [selectedSchedule, setSelectedSchedule] =
-    useState<Schedule[]>(mockSchedules);
-  const activeDates = getDatesFromSchedules(selectedSchedule);
+interface CalendarProps {
+  initialDate?: Date | moment.Moment;
+  schedules?: Schedule[];
+  onDateItemClick?: (date: Date | moment.Moment) => void;
+  dateItem?: (date: Date | moment.Moment) => JSX.Element;
+}
+
+const Calendar: FC<CalendarProps> = ({
+  initialDate = new Date(),
+  schedules = [],
+}) => {
+  const [currentDate, setCurrentDate] = useState<Moment | Date>(initialDate);
+
+  const activeDates = getDatesFromSchedules(schedules as Schedule[]);
 
   const [editMode, setEditMode] = useState(false);
 
