@@ -1,10 +1,15 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import { FC } from "react";
-import { BasicScheduleProps } from "../types";
+import { BasicScheduleProps, ScheduleIsItemsRendererProps } from "./types";
 
-export const ScheduleIstemsRenderer: FC<BasicScheduleProps> = ({
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
+import { getMultiplierAndFrequency } from "../../Calendar/helpers";
+
+const ScheduleIstemsRenderer: FC<ScheduleIsItemsRendererProps> = ({
   schedules = [],
   selectedSchedules,
+  setScheduleToEdit,
   setSchedules,
 }) => {
   return (
@@ -33,14 +38,28 @@ export const ScheduleIstemsRenderer: FC<BasicScheduleProps> = ({
                   }}>
                   <Box sx={{ flex: 1 }}>{schedule.title}</Box>
                   <Box>
-                    <Button
-                      variant="outlined"
+                    <IconButton
                       color="warning"
+                      onClick={() => {
+                        const [frequencyModifier, frequency] =
+                          getMultiplierAndFrequency(schedule.frequency);
+                        const scheduleToEdit = {
+                          ...schedule,
+                          frequencyModifier,
+                          frequency,
+                        };
+                        console.log(scheduleToEdit);
+                        setScheduleToEdit(scheduleToEdit);
+                      }}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      color="error"
                       onClick={() => {
                         // setSelectedSchedules([schedule]);
                       }}>
-                      Delete
-                    </Button>
+                      <DeleteForeverIcon />
+                    </IconButton>
                   </Box>
                 </Box>
               </Box>
@@ -50,3 +69,5 @@ export const ScheduleIstemsRenderer: FC<BasicScheduleProps> = ({
     </>
   );
 };
+
+export default ScheduleIstemsRenderer;

@@ -1,21 +1,32 @@
-import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import moment from "moment";
 import { FC, useState } from "react";
 import Accordion from "../../components/Accordion/Accordion";
 import Calendar from "../../components/Calendar";
 import EditorAndSidebar from "../../components/layout/Editor+Sidebar";
-import { ScheduleIstemsRenderer } from "../../components/pagesLayout/schedules/ScheduleIstemsRenderer";
-import MUITabs from "../../components/Tabs";
+import ScheduleIstemsRenderer from "../../components/pagesLayout/schedules/ScheduleIsItemsRenderer";
+import ScheduleEditor from "../../components/pagesLayout/schedules/SchedulesEditor";
+import Tabs from "../../components/Tabs";
 import { mockSchedules } from "../../utils/mock";
-import { Schedule } from "../../utils/types/schedules";
+import { Schedule, ScheduleToEdit } from "../../utils/types/schedules";
 
 const Schedule: FC = () => {
   const [schedulesTemplates, setSchedulesTemplates] =
     useState<Schedule[]>(mockSchedules);
   const [userSchedules, setUserSchedules] = useState<Schedule[]>([]);
   const [selectedSchedules, setSelectedSchedules] = useState<Schedule[]>([]);
-  const [value, setValue] = useState(0);
+  const [scheduleToEdit, setScheduleToEdit] = useState<ScheduleToEdit | null>();
 
-  const editorContent = <Calendar schedules={selectedSchedules} />;
+  const editorContent = (
+    <>
+      <Calendar schedules={selectedSchedules} />
+      <ScheduleEditor
+        selectedSchedules={selectedSchedules}
+        setSelectedSchedules={setSelectedSchedules}
+        scheduleToEdit={scheduleToEdit as ScheduleToEdit}
+      />
+    </>
+  );
 
   const schedulesTabAccordionContent = [
     {
@@ -26,6 +37,7 @@ const Schedule: FC = () => {
             selectedSchedules={selectedSchedules}
             schedules={schedulesTemplates}
             setSchedules={setSelectedSchedules}
+            setScheduleToEdit={setScheduleToEdit}
           />
         </>
       ),
@@ -61,7 +73,16 @@ const Schedule: FC = () => {
           variant="contained"
           color="secondary"
           onClick={() => {
-            // setSelectedSchedules([schedule]);
+            setScheduleToEdit({
+              id: `${Date.now()}`,
+              title: "Your new schedule",
+              isTemplate: false,
+              frequencyModifier: 1,
+              frequency: "weekly",
+              start: moment(),
+              end: moment().add(1, "month").add(1, "hour"),
+              customDates: [],
+            });
           }}>
           Create template
         </Button>
